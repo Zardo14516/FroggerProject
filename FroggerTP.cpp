@@ -27,7 +27,7 @@ public:
 		srand(static_cast<unsigned>(time(0)));  //Semilla para generacion aleatoria de numeros
 	}
 	
-	void srawScreen(){
+	void drawScreen(){
 		system("cls"); //system cls para limpiar la pantalla
 		
 		//Dybujar borde
@@ -80,21 +80,42 @@ public:
 		}
 	}	
 	
-	void
+	void moverCars() {
+		car1Posicion = (car1Posicion + car1Velocidad) % SCREEN_WIDTH;
+		car2Posicion = (car2Posicion + car2Velocidad) % SCREEN_WIDTH;
+		car3Posicion = (car3Posicion + car3Velocidad) % SCREEN_WIDTH;
+	}
 		
+	bool checkCollision(){
+		return (frogPosicionX == car1Posicion && frogPosicionY == SCREEN_HEIGHT - 2) ||
+			   (frogPosicionX == car2Posicion && frogPosicionY == SCREEN_HEIGHT - 2) ||
+			   (frogPosicionX == car3Posicion && frogPosicionY == SCREEN_HEIGHT - 2);
+	}
 
-	
-	
-	
-	
-	
+	void play(){
+		while (true) {
+			drawScreen();
+			
+			if (_kbhit()){
+			char key = _getch();
+			moveFrog(key);
+			}
+			moverCars();
+			
+			if (checkCollision()){
+				cout <<"Perdiste! Pisaron la rana." << endl;
+				break;
+			}
+			Sleep(100); // Dormir por 100 millisegundos
+		}
+	}
 };
 
 
-
-
-
 int main(int argc, char *argv[]) {
+	
+	FroggerGame game;
+	game.play();
 	
 	return 0;
 }
