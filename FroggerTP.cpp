@@ -30,7 +30,7 @@ public:
 	void drawScreen(){
 		system("cls"); //system cls para limpiar la pantalla
 		
-		//Dybujar borde
+		//Dibujar borde
 		for (int i = 0; i < SCREEN_WIDTH + 2; ++i){
 			cout<<BORDER; 
 		}
@@ -53,7 +53,8 @@ public:
 			cout << BORDER;
 		}
 		cout << endl;
-		}
+		
+	}	
 		
 	void moveFrog(char direction) {
 		switch (direction){
@@ -80,6 +81,11 @@ public:
 		}
 	}	
 	
+	void respawnFrog(){
+		frogPosicionX = SCREEN_WIDTH / 2;
+		frogPosicionY = SCREEN_HEIGHT - 1;
+	}
+	
 	void moverCars() {
 		car1Posicion = (car1Posicion + car1Velocidad) % SCREEN_WIDTH;
 		car2Posicion = (car2Posicion + car2Velocidad) % SCREEN_WIDTH;
@@ -91,7 +97,8 @@ public:
 			   (frogPosicionX == car2Posicion && frogPosicionY == SCREEN_HEIGHT - 2) ||
 			   (frogPosicionX == car3Posicion && frogPosicionY == SCREEN_HEIGHT - 2);
 	}
-
+		
+		
 	void play(){
 		while (true) {
 			drawScreen();
@@ -103,9 +110,11 @@ public:
 			moverCars();
 			
 			if (checkCollision()){
-				cout <<"Perdiste! Pisaron la rana." << endl;
-				break;
+				cout <<"Pisaron la rana!" << endl;
+				Sleep(1000); 
+				respawnFrog();
 			}
+			
 			Sleep(100); // Dormir por 100 millisegundos
 		}
 	}
